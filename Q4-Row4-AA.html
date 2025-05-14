@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Canteen Queue Form</title>
+		<link rel="stylesheet" href="styles.css">
+	  
+	  <style>
+		body {
+		  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-xOcaDV_TnK-7Y147Zo2MEGrvhJU-DHdrFQ&s);
+		  background-size: cover;
+		  background-position: center;
+		  margin: 0;
+		  padding: 0;
+		}
+		h1, h2 {
+		  text-align: center;
+		}
+		.container {
+		  background-color: rgba(255, 255, 255, 0.7);
+		  margin: 50px auto;
+		  padding: 20px;
+		  max-width: 600px;
+		  border-radius: 20px;
+		  border: 3px solid white;
+		}
+		
+	  </style>
+	</head>
+	<body>
+
+	   <div class = "container">
+		<h1>Canteen Queue Registration Form</h1>
+		<hr size="2" color=black>
+		<h2>Join the Queue</h2>
+		<form>
+			<input type="text" id="name" placeholder="Name" required>
+			<input type="text" id="purpose" placeholder="Purpose" required>
+			<input type="text" id="id" placeholder="ID Number" required>
+			<input type="button" value="Join Queue" onclick="storeName()">
+		</form>
+		<hr size="1" color=black>
+		<div>
+			<h2>Current Queue</h2>
+			<h3 id="QUEUE"></h3>
+		</div><br>
+		   <hr size="1" color=black>
+		<div>
+			<h2>Admin Panel</h2>
+			<div id="ADMIN"></div>
+		</div>
+	  </div>
+	  
+
+		<script>
+			function getQueue(){
+				let data = localStorage.getItem("queue");
+				if (!data || data.trim() === "") return [];
+				let entries = data.split("||");
+				let queue = [];
+				for (let i = 0; i < entries.length; i++) {
+					let inputs = entries[i].split("|");
+					if (inputs.length === 3) {
+						queue.push({ name: inputs[0], purpose: inputs[1], idnum: inputs[2] });
+					}
+				}
+				return queue;
+			}
+
+			function saveQueue(queue){
+				let result = "";
+				for (let i = 0; i < queue.length; i++) {
+					result += queue[i].name + "|" + queue[i].purpose + "|" + queue[i].idnum;
+					if (i !== queue.length - 1) result += "||";
+				}
+				localStorage.setItem("queue", result);
+			}
+
+			function storeName(){
+			 
+				let name = document.getElementById("name").value.trim();
+				let purpose = document.getElementById("purpose").value.trim();
+				let idnum = document.getElementById("id").value.trim();
+				
+			  
+				if (name === "" || purpose === "" || idnum === ""){
+					alert("Please fill out all fields.");
+					return;
+				}
+				
+				localStorage.setItem("customer", name);
+				localStorage.setItem("thepurpose", purpose);
+				localStorage.setItem("number", idnum);
+
+				let queue = getQueue();
+				queue.push({ name: name, purpose: purpose, idnum: idnum });
+				saveQueue(queue);
+				addName();
+			}
+
+			function addName() {
+				let queue = getQueue();
+				
+				let qtext = "<ol>";
+				for (let i = 0; i < queue.length; i++){
+					qtext += "<li>" + queue[i].name + " - " + queue[i].purpose + "</li>";
+				}
+				qtext += "</ol>";
+				document.getElementById("QUEUE").innerHTML = qtext;
+				
+				let atext = "";
+				for (let i = 0; i < queue.length; i++){
+					atext += queue[i].name + " (" + queue[i].idnum + ") - " + queue[i].purpose + " " +
+						'<input type="button" class = "servebutton" onclick="serve(' + i + ')" value="Serve">' +
+						'<input type="button" class = "servebutton" onclick="serve(' + i + ')" value="Remove"><br />';
+				}
+				document.getElementById("ADMIN").innerHTML = atext;
+				
+				document.getElementById("name").value = "";
+				document.getElementById("purpose").value = "";
+				document.getElementById("id").value = "";
+			}
+	  
+			function serve(index){    
+				let queue = getQueue();
+				queue.splice(index, 1);
+				saveQueue(queue);
+				addName();
+			}
+
+			window.onload = addName;
+		</script>
+	</body>
+</html>
