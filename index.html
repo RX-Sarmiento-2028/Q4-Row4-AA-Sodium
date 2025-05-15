@@ -27,33 +27,32 @@
 </head>
 <body>
     <div class = "container">
-    <h1>Canteen Queue Registration Form</h1>
-    <hr>
-    <h2>Join the Queue</h2>
-    <form>
-        <input type="text" id="name" placeholder="Name" required>
-        <input type="text" id="purpose" placeholder="Purpose" required>
-        <input type="text" id="id" placeholder="00-0000-000" 
-               pattern="\d{2}-\d{4}-\d{3}" 
-               title="Enter ID in the format 00-0000-000" 
-               maxlength="11" required>
-        <input type="button" value="Join Queue" onclick="storeName()">
-    </form>
-    <hr>
-    <div>
-        <h2>Current Queue</h2>
-        <h3 id="QUEUE"></h3>
-    </div><br>
-    <div>
-        <h2>Admin Panel</h2>
-        <div id="ADMIN"></div>
-    </div>
+	    <h1>Canteen Queue Registration Form</h1>
+	    <hr>
+	    <h2>Join the Queue</h2>
+	    <form>
+	        <input type="text" id="name" placeholder="Name" required>
+	        <input type="text" id="purpose" placeholder="Purpose" required>
+	        <input type="text" id="id" placeholder="00-0000-000" 
+	               pattern="\d{2}-\d{4}-\d{3}" 
+	               title="Enter ID in the format 00-0000-000" 
+	               maxlength="11" required>
+	        <input type="button" value="Join Queue" onclick="storeName()">
+	    </form>
+	    <hr>
+	    <div>
+	        <h2>Current Queue</h2>
+	        <h3 id="QUEUE"></h3>
+	    </div><br>
+	    <div>
+	        <h2>Admin Panel</h2>
+	        <div id="ADMIN"></div>
+	    </div>
     </div>
     <script>
-        // Auto-format ID field as 00-0000-000
         document.getElementById("id").addEventListener("input", function(e) {
-            let input = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
-            if (input.length > 9) input = input.slice(0, 9); // Limit to 9 digits
+            let input = e.target.value.replace(/\D/g, ''); 
+            if (input.length > 9) input = input.slice(0, 9); 
 
             let formatted = "";
             if (input.length > 0) formatted += input.slice(0, 2);
@@ -98,7 +97,7 @@
 
             let queue = getQueue();
 
-            // ❗ Prevent duplicate ID numbers
+            
             for (let i = 0; i < queue.length; i++) {
                 if (queue[i].idnum === idnum) {
                     alert("This ID number is already in the queue.");
@@ -118,7 +117,7 @@
         function addName() {
             let queue = getQueue();
 
-            // Current queue
+           
             let qtext = "<ol>";
             for (let i = 0; i < queue.length; i++){
                 qtext += "<li>" + queue[i].name + " - " + queue[i].purpose + "</li>";
@@ -126,7 +125,7 @@
             qtext += "</ol>";
             document.getElementById("QUEUE").innerHTML = qtext;
 
-            // Admin panel
+       
             let atext = "";
             for (let i = 0; i < queue.length; i++){
                 atext += queue[i].name + " (" + queue[i].idnum + ") - " + queue[i].purpose + " " +
@@ -135,7 +134,7 @@
             }
             document.getElementById("ADMIN").innerHTML = atext;
 
-            // Clear inputs
+          
             document.getElementById("name").value = "";
             document.getElementById("purpose").value = "";
             document.getElementById("id").value = "";
