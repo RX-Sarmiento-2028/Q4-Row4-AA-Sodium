@@ -18,7 +18,7 @@
 		  background-color: rgba(255, 255, 255, 0.7);
 		  margin: 50px auto;
 		  padding: 20px;
-		  max-width: 650px;
+		  max-width: 640px;
 		  border-radius: 20px;
 		  border: 3px solid white;
 		}
@@ -31,12 +31,12 @@
 	    <h2>Join the Queue</h2>
 	    <form>
 	        <input type="text" id="name" placeholder="Name" required>
-	        <input type="text" id="purpose" placeholder="Order" required>
+	        <input type="text" id="order" placeholder="Order" required>
 	        <input type="text" id="id" placeholder="00-0000-000" 
 	               pattern="\d{2}-\d{4}-\d{3}" 
 	               title="Enter ID in the format 00-0000-000" 
 	               maxlength="11" required>
-	        <input type="button" value="Join Queue" onclick="storeName()">
+	        <input type="button" value="Join Queue" onclick="storage()">
 	    </form>
 	    <hr>
 	    <div>
@@ -84,12 +84,12 @@
             localStorage.setItem("queue", result);
         }
 
-        function storeName(){
+        function storage(){
             let name = document.getElementById("name").value.trim();
-            let purpose = document.getElementById("purpose").value.trim();
+            let oder = document.getElementById("oder").value.trim();
             let idnum = document.getElementById("id").value.trim();
 
-            if (name === "" || purpose === "" || idnum === ""){
+            if (name === "" || order === "" || idnum === ""){
                 alert("Please fill out all fields.");
                 return;
             }
@@ -105,10 +105,10 @@
             }
 
             localStorage.setItem("customer", name);
-            localStorage.setItem("thepurpose", purpose);
+            localStorage.setItem("theorder", order);
             localStorage.setItem("number", idnum);
 
-            queue.push({ name: name, purpose: purpose, idnum: idnum });
+            queue.push({ name: name, oder: order, idnum: idnum });
             saveQueue(queue);
             addName();
         }
@@ -135,7 +135,7 @@
 
           
             document.getElementById("name").value = "";
-            document.getElementById("purpose").value = "";
+            document.getElementById("order").value = "";
             document.getElementById("id").value = "";
         }
 
